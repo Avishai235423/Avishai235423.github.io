@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>101</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script>
+        var timeLeft = 7.3;
+        var endTime;
+        var intervalId;
+
+        function handleRadioChange(event) {
+            try {
+                timer.innerHTML = timeLeft;
+
+                setInterval(function() {
+                    timeLeft = timeLeft - 0.1;
+                    displayLeftTime({
+                        timer: timer, 
+                        status: status, 
+                        submitBtn: submitBtn
+                    });
+                }, 100);
+            } catch (error) {
+
+            }
+        }
+
+        function displayLeftTime(parameters) {
+            var timer = parameters.timer;
+            var status = parameters.status;
+            var submitBtn = parameters.submitBtn;
+            
+            timer.innerHTML = timeLeft;
+
+            // Check if time is up
+            if (timeLeft <= 0) {
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                submitBtn.disabled = true;
+                status.innerHTML = "Time's up!";
+                status.classList.remove('text-green-500');
+                status.classList.add('text-red-500');
+            }
+          
+        }
+
+        function submitAnswer() {
+            var selectedOption = document.querySelector('input[name="answer"]:checked');
+            if (selectedOption && timeLeft > 0) {
+                document.getElementById('status').innerText = "Answer submitted!";
+                document.getElementById('status').classList.remove('text-red-500');
+                document.getElementById('status').classList.add('text-green-500');
+            } else {
+                document.getElementById('status').innerText = "Please select an option and submit before time runs out!";
+                document.getElementById('status').classList.remove('text-green-500');
+                document.getElementById('status').classList.add('text-red-500');
+            }
+        }
+    </script>
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-100">
+    <div class="bg-white shadow-md rounded-lg p-6 w-96">
+        <h1 class="text-xl font-bold mb-4">JavaScript Quiz</h1>
+        
+        <div class="mb-4">
+            <p class="font-medium mb-2">Which is NOT a JavaScript data type?</p>
+            
+            <div class="space-y-2">
+                <label class="flex items-center">
+                    <input type="radio" name="answer" value="string" class="mr-2" onchange="handleRadioChange(event)">
+                    <span>String</span>
+                </label>
+                
+                <label class="flex items-center">
+                    <input type="radio" name="answer" value="integer" class="mr-2" onchange="handleRadioChange(event)">
+                    <span>Integer</span>
+                </label>
+                
+                <label class="flex items-center">
+                    <input type="radio" name="answer" value="boolean" class="mr-2" onchange="handleRadioChange(event)">
+                    <span>Boolean</span>
+                </label>
+                
+                <label class="flex items-center">
+                    <input type="radio" name="answer" value="undefined" class="mr-2" onchange="handleRadioChange(event)">
+                    <span>Undefined</span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="flex justify-between items-center mb-4">
+            <div>
+                <span class="font-medium">Time left: </span>
+                <span id="timer" class="font-bold">7.3</span>
+                <span> seconds</span>
+            </div>
+            
+            <button 
+                id="submitBtn" 
+                onclick="submitAnswer()" 
+                class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors">
+                Submit
+            </button>
+        </div>
+        
+        <div id="status" class="text-center mt-4 font-medium"></div>
+  
+    </div>
+</body>
+</html>
